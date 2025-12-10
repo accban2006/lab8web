@@ -2,11 +2,14 @@ package com.example.customer_api.service;
 
 import com.example.customer_api.dto.CustomerRequestDTO;
 import com.example.customer_api.dto.CustomerResponseDTO;
+import com.example.customer_api.dto.CustomerUpdateDTO;
 import com.example.customer_api.entity.Customer;
 import com.example.customer_api.exception.DuplicateResourceException;
 import com.example.customer_api.exception.ResourceNotFoundException;
 import com.example.customer_api.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,4 +134,53 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setAddress(dto.getAddress());
         return customer;
     }
+
+    @Override
+    public List<CustomerResponseDTO> getCustomersByStatus(String status, String email, String status2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCustomersByStatus'");
+    }
+
+    @Override
+    public List<CustomerResponseDTO> advancedSearch(String name, String email, String status) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'advancedSearch'");
+    }
+
+    @Override
+    public Page<CustomerResponseDTO> getAllCustomers(int page, int size) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomers'");
+    }
+
+    @Override
+    public List<CustomerResponseDTO> getAllCustomers(Sort sort) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomers'");
+    }
+
+
+    @Override
+    public CustomerResponseDTO partialUpdateCustomer(Long id, CustomerUpdateDTO updateDTO) {
+    Customer customer = customerRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+    
+    // Only update non-null fields
+    if (updateDTO.getFullName() != null) {
+        customer.setFullName(updateDTO.getFullName());
+    }
+    if (updateDTO.getEmail() != null) {
+        customer.setEmail(updateDTO.getEmail());
+    }
+    if (updateDTO.getPhone() != null) {
+    customer.setPhone(updateDTO.getPhone());
+    }
+        if (updateDTO.getAddress() != null) {
+        customer.setAddress(updateDTO.getAddress());
+    }
+
+    
+    return convertToResponseDTO(customerRepository.save(customer));
+}
+
 }
